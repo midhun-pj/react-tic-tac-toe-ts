@@ -22,6 +22,18 @@ const Board: FC<IBoardProps> = ({ xIsNext, squares, onPlay }) => {
     onPlay(nextSquares);
   };
 
+  const renderRow = (rowIndex: number) => (
+    <div className="board-row" key={rowIndex}>
+      {Array.from({ length: 3 }, (_, colIndex) => (
+        <Square
+          key={colIndex}
+          value={squares[rowIndex * 3 + colIndex]}
+          onSquareClick={() => handleClick(rowIndex * 3 + colIndex)}
+        />
+      ))}
+    </div>
+  );
+
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
@@ -33,21 +45,7 @@ const Board: FC<IBoardProps> = ({ xIsNext, squares, onPlay }) => {
   return (
     <>
       <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
+      {Array.from({ length: 3 }, (_, rowIndex) => renderRow(rowIndex))}
     </>
   );
 };
